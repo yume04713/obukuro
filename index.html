@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8fb">
+  <meta name="robots" content="noindex,nofollow">
+  <title>大袋東小 ニュース検索</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <p class="eyebrow">PERSONAL SCHOOL NEWS INDEX</p>
+      <h1>大袋東小 ニュース検索</h1>
+      <p class="intro">学校の公開記事を読み込み、本文検索や画像一覧で探しやすくする個人用インデックスです。</p>
+      <p class="source">元サイト：<a href="https://school.city.koshigaya.saitama.jp/obukuroh_e/" target="_blank" rel="noopener noreferrer">越谷市立大袋東小学校 公式サイト</a></p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="search-panel" aria-label="検索">
+      <label for="query">記事のタイトル・本文を検索</label>
+      <input id="query" type="search" placeholder="例：運動会、給食、遠足" autocomplete="off">
+      <div class="filters">
+        <label class="filter-label" for="year">年度</label>
+        <select id="year">
+          <option value="">すべての年度</option>
+        </select>
+        <label class="filter-label" for="category">カテゴリ</label>
+        <select id="category">
+          <option value="">すべてのカテゴリ</option>
+        </select>
+        <button id="clear" type="button" class="quiet">条件をクリア</button>
+      </div>
+      <div class="tabs" role="tablist" aria-label="表示方法">
+        <button type="button" class="tab active" data-view="articles" role="tab" aria-selected="true">記事一覧</button>
+        <button type="button" class="tab" data-view="images" role="tab" aria-selected="false">画像一覧</button>
+      </div>
+      <p id="status" class="status" aria-live="polite">記事データを読み込んでいます…</p>
+    </section>
+
+    <section id="articles-view">
+      <div class="results-head"><h2>記事</h2><span id="article-count"></span></div>
+      <div id="articles" class="article-list"></div>
+    </section>
+    <section id="images-view" hidden>
+      <div class="results-head"><h2>画像</h2><span id="image-count"></span></div>
+      <p class="note">画像は元の学校サイトから直接表示します。画像を選ぶと掲載元の記事を開きます。</p>
+      <div id="images" class="image-grid"></div>
+    </section>
+    <footer>
+      <p>このサイトは学校公式サイトとは無関係の個人用ツールです。記事・画像の権利は各権利者に帰属します。</p>
+      <p><a href="https://school.city.koshigaya.saitama.jp/obukuroh_e/" target="_blank" rel="noopener noreferrer">学校公式サイトへ</a> · 最終更新：<span id="updated">未取得</span></p>
+    </footer>
+  </main>
+  <script src="app.js" defer></script>
+</body>
+</html>
