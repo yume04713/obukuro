@@ -1,0 +1,55 @@
+name: Update school index and publish
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 07:00 Japan time every day (22:00 UTC previous day)
+    - cron: "0 22 * * *"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+      - run: pip install -r requirements.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: python scripts/crawl.py
+      - name: Commit updated index
+        run: |
+          if ! git diff --quiet -- data/articles.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/articles.json
+            git commit -m "Update school article index"
+            git push
+          fi
+
+  deploy:
+    needs: crawl
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: "."
+      - id: deployment
+        uses: actions/deploy-pages@v4
