@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 
 BASE = "https://school.city.koshigaya.saitama.jp"
-LISTING = BASE + "/obukuroh_e/notice/index/148/"
+LISTING = BASE + "/_view/obukuroh_e/notice/index/148/"
 OUT = Path(__file__).resolve().parents[1] / "data" / "articles.json"
 MAX_ARTICLES = 2000
 MAX_PAGES = 250
