@@ -1,0 +1,55 @@
+名前: 学校索引を更新しししんしん
+
+むしるん/deploy-pages@v4:
+  ワークフロー_ディスパッチ:
+  スケジュール:
+    # 毎日日本時間07:00（前日協定世界時22:00)
+    - クロン: 「0 22 * * *」
+
+権限:
+  内容: 書く
+  ページ: 書く
+  idトークン: 書く
+
+同時実行性:
+  グループ: 「ページ」
+  キャンセル中: 間違い
+
+仕事:
+  クロール:
+    走り続ける: ubuntu-最新
+    ステップ:
+      - 用途: アクション/checkout@v4
+      - 用途: アクション/setup-python@v5
+        と:
+          Pythonバージョン: 「3。12」
+          キャッシュ: 「ピップ」
+      - 走る: pip install -r requirements。txt
+      - 走る: python -m playwright インストール --with-deps chromium
+      - 走る: Python スクリプト/crawl。py
+      - 名前: 更新されたインデックスをコミットします
+        走る: |
+          もし！git diff --quiet -- data/articles。json； 次に
+            git config user。name "github-actions[bot]"
+            git config user。email "41898282+github-actions[bot]@users。noreply。github。com"
+            git add data/articles。json
+            git commit -m 「学校記事インデックスを更新」
+            git プッシュ
+          フィ
+
+  展開する:
+    ニーズ: クロール
+    走り続ける: ubuntu-最新
+    環境:
+      名前: githubページ
+      URL: ${{ steps。deployment。outputs。page_url }}
+    ステップ:
+      - 用途: アクション/checkout@v4
+        と:
+          参照: メイン
+      - 用途: アクション/configure-pages@v5
+      - 用途: アクション/upload-pages-artifact@v4
+        と:
+          パス: 「。」
+      - ID: 展開
+        用途: アクション/deploy-pages@v4
