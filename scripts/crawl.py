@@ -40,6 +40,19 @@ async def main():
             pass
         await page.wait_for_timeout(1500)
 
+        print("実際のURL:", page.url)
+print("ページタイトル:", await page.title())
+print("本文の先頭:", (await page.locator("body").inner_text())[:1500])
+print(
+    "リンク一覧:",
+    await page.locator("a[href]").evaluate_all(
+        """els => els.slice(0, 30).map(a => ({
+            text: (a.innerText || a.textContent || '').trim(),
+            href: a.href
+        }))"""
+    )
+)
+        
         article_urls = {}
         # The site loads entries in batches; keep clicking while the control exists.
         for page_no in range(MAX_PAGES):
